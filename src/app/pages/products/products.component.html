@@ -1,9 +1,11 @@
-@if (isLoading) {
-  <p-progressSpinner></p-progressSpinner>
-} @else {
+@if (products$ | async; as products) {
   <div class="container">
     @for (product of products; track product.id) {
       <app-product [product]="product"></app-product>
+    } @empty {
+      <p>There are no products to display.</p>
     }
   </div>
+} @else {
+  <p-progressSpinner></p-progressSpinner>
 }
