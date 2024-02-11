@@ -1,0 +1,11 @@
+<p-card [header]="product?.title">
+  <ng-template pTemplate="header">
+    <img alt="Card" [src]="product?.images![0]" />
+  </ng-template>
+  <p class="m-0">
+      {{ product?.description }}
+  </p>
+  <div class="card-footer">
+    <p>{{ product?.category?.name }}</p>
+  </div>
+</p-card>

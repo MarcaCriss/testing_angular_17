@@ -1,0 +1,9 @@
+@if (isLoading) {
+  <p-progressSpinner></p-progressSpinner>
+} @else {
+  <div class="container">
+    @for (product of products; track product.id) {
+      <app-product [product]="product"></app-product>
+    }
+  </div>
+}

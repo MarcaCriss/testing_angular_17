@@ -1,12 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterOutlet } from '@angular/router';
-import { MaterialModule } from './shared/material.module';
+import { ButtonModule} from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
+import { ProductsComponent } from './pages/products/products.component';
 
 const IMPORTS_MODULES = [
   CommonModule,
   RouterOutlet,
-  MaterialModule,
+  ButtonModule,
+  TabViewModule,
+  ProductsComponent,
 ];
 
 @Component({
@@ -19,7 +23,11 @@ const IMPORTS_MODULES = [
 export class AppComponent {
   private router = inject(Router);
 
+  redirectProducts() {
+    this.router.navigate(['product']);
+  }
+
   redirectHome() {
-    this.router.navigate(['home']);
+    this.router.navigate(['']);
   }
 }
