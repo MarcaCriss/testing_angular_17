@@ -2,7 +2,19 @@
   <ng-template pTemplate="header">
     <div class="relative">
       <img alt="Card" [src]="images[0]" />
-      <button pButton icon="pi pi-pencil" (click)="editProduct()" class="button__edit"></button>
+      <button
+        pButton
+        icon="pi pi-pencil"
+        (click)="editProduct()"
+        class="absolute top-0 p-button-sm"
+        style="left: 70%"
+      ></button>
+      <button
+        pButton
+        icon="pi pi-trash"
+        (click)="deleteProduct()"
+        class="absolute top-0 right-0 p-button-sm p-button-danger"
+      ></button>
     </div>
   </ng-template>
   <p class="m-0">

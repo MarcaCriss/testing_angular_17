@@ -1,4 +1,4 @@
-import { Component, Input, inject } from '@angular/core';
+import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { ProductInterface } from '../../../shared/interfaces/product.interface';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
@@ -16,6 +16,7 @@ const IMPORTS_MODULES = [CardModule, ButtonModule];
 })
 export class ProductComponent {
   @Input({ required: true }) product?: ProductInterface;
+  @Output() deleteProductEmit = new EventEmitter<number>();
   private dialogService = inject(DialogService);
 
   editProduct(): void {
@@ -35,6 +36,10 @@ export class ProductComponent {
           this.product = res.data;
         }
       });
+  }
+
+  deleteProduct(): void {
+    this.deleteProductEmit.emit(this.product?.id);
   }
 
   get images(): string[] {

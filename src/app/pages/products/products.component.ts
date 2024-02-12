@@ -24,7 +24,7 @@ const IMPORTS_MODULES = [
   imports: [...IMPORTS_MODULES],
   templateUrl: './products.component.html',
   styleUrl: './products.component.scss',
-  providers: [ProductsService, DialogService]
+  providers: [ProductsService, DialogService],
 })
 export class ProductsComponent {
   private productsService = inject(ProductsService);
@@ -42,6 +42,13 @@ export class ProductsComponent {
       if (res?.product) {
         this.products$ = this.productsService.getProducts();
       }
+    });
+  }
+
+  deleteProduct(id: number) {
+    this.productsService.deleteProduct(id).subscribe((res) => {
+      this.isLoading = true;
+      this.products$ = this.productsService.getProducts();
     });
   }
 }
