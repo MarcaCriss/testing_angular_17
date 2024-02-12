@@ -13,7 +13,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DividerModule } from 'primeng/divider';
 import { ButtonModule } from 'primeng/button';
 import { InputNumberModule } from 'primeng/inputnumber';
-import { DynamicDialogRef } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { CategoriesService } from '../../../services/categories.service';
 import { ProductsService } from '../../../services/products.service';
@@ -43,14 +43,19 @@ const IMPORTS_MODULES = [
 export class ProductFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   private dialogRef = inject(DynamicDialogRef);
+  private dialogConfig = inject(DynamicDialogConfig);
   private categoriesService = inject(CategoriesService);
   private productsService = inject(ProductsService);
 
   categoryOptions: { label: string; value: number }[] = [];
   form: FormGroup = this.buildForm();
   isLoading = false;
-
+  product?: ProductInterface;
   ngOnInit(): void {
+    this.product = this.dialogConfig.data?.product;
+    if (this.product) {
+      this.form = this.buildForm(this.product);
+    }
     this.getCategories();
   }
 
@@ -63,13 +68,18 @@ export class ProductFormComponent implements OnInit {
     });
   }
 
-  buildForm(): FormGroup {
+  buildForm(product?: ProductInterface): FormGroup {
     return this.fb.group({
-      title: new FormControl('', Validators.required),
-      price: new FormControl(0, Validators.required),
-      description: new FormControl('', Validators.required),
-      categoryId: new FormControl(null, Validators.required),
-      images: new FormArray([], Validators.required),
+      title: new FormControl(product?.title, Validators.required),
+      price: new FormControl(product?.price || 0, Validators.required),
+      description: new FormControl(product?.description, Validators.required),
+      categoryId: new FormControl(product?.category?.id, Validators.required),
+      images: new FormArray(
+        (product?.images || []).map(
+          (image) => new FormControl(image, Validators.required),
+        ),
+        Validators.required,
+      ),
     });
   }
 
@@ -79,12 +89,23 @@ export class ProductFormComponent implements OnInit {
       return;
     }
     this.isLoading = true;
-    this.productsService.saveProduct(this.form.value).subscribe((product) => {
-      if (product) {
-        this.close(product);
-      }
-      this.isLoading = false;
-    });
+    if (this.product && this.product.id) {
+      this.productsService
+        .updateProduct(this.product.id, this.form.value)
+        .subscribe((product) => {
+          if (product) {
+            this.close(product);
+          }
+          this.isLoading = false;
+        });
+    } else {
+      this.productsService.saveProduct(this.form.value).subscribe((product) => {
+        if (product) {
+          this.close(product);
+        }
+        this.isLoading = false;
+      });
+    }
   }
 
   close(product?: ProductInterface): void {

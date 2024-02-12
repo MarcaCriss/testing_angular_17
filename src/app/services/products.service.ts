@@ -20,4 +20,14 @@ export class ProductsService {
       product,
     );
   }
+
+  updateProduct(
+    id: number,
+    product: ProductInterface,
+  ): Observable<ProductInterface> {
+    return this.http.put<ProductInterface>(
+      `${this.baseUrl}/products/${id}`,
+      product,
+    );
+  }
 }

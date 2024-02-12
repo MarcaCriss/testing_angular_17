@@ -1,9 +1,12 @@
 <p-card [header]="product?.title">
   <ng-template pTemplate="header">
-    <img alt="Card" [src]="product?.images![0]" />
+    <div class="relative">
+      <img alt="Card" [src]="images[0]" />
+      <button pButton icon="pi pi-pencil" (click)="editProduct()" class="button__edit"></button>
+    </div>
   </ng-template>
   <p class="m-0">
-      {{ product?.description }}
+    {{ product?.description }}
   </p>
   <div class="card-footer">
     <p>{{ product?.category?.name }}</p>
