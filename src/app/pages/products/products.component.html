@@ -1,4 +1,8 @@
 @if (products$ | async; as products) {
+  <div class="container__header">
+    <h1>Products</h1>
+    <button pButton (click)="createProduct()">Add Product</button>
+  </div>
   <div class="container">
     @for (product of products; track product.id) {
       <app-product [product]="product"></app-product>

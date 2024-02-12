@@ -1,0 +1,79 @@
+@if (!isLoading) {
+  <form novalidate [formGroup]="form" (ngSubmit)="submit()">
+    <span class="p-float-label mt-5 p-fluid">
+      <input type="text" pInputText formControlName="title" />
+      <label for="username">Title</label>
+    </span>
+    <span class="p-float-label mt-5 p-fluid">
+      <p-inputNumber inputId="integeronly" formControlName="price">
+      </p-inputNumber>
+      <label for="username">Price</label>
+    </span>
+    <span class="p-float-label mt-5 p-fluid">
+      <textarea rows="2" cols="30" pInputTextarea formControlName="description"></textarea>
+      <label for="username">Description</label>
+    </span>
+    <span class="p-float-label mt-5 p-fluid">
+      <p-dropdown
+        appendTo="body"
+        [options]="categoryOptions"
+        formControlName="categoryId"
+      ></p-dropdown>
+      <label for="username">CategoryId</label>
+    </span>
+    <ng-container formArrayName="images">
+      <div class="flex justify-content-between align-items-center">
+        <h3>Images</h3>
+        <p-button
+          type="button"
+          icon="pi pi-plus"
+          label="Add Image"
+          class="p-button-sm"
+          size="small"
+          (click)="addImage()"
+        ></p-button>
+      </div>
+      <div class="container__images custom-scroll">
+        @for (image of images.controls; let id = $index; track id;) {
+          <div class="flex justify-content-between align-items-center" [ngClass]="id === 0 ? '' : 'mt-2'">
+            <div class="flex align-items-center">
+              <button
+                pButton
+                type="button"
+                icon="pi pi-times"
+                class="mr-1 p-button-danger"
+                (click)="removeImage(id)"
+              ></button>
+              @if (image.value && isUrlValid(image.value)) {
+                <img [src]="image.value" alt="image" class="image" />
+              } @else {
+                <img src="https://ih1.redbubble.net/image.1893341687.8294/fposter,small,wall_texture,product,750x1000.jpg" alt="image" class="image" />
+              }
+            </div>
+            <input type="text" pInputText [formControlName]="id" />
+          </div>
+        }
+      </div>
+    </ng-container>
+    <p-divider></p-divider>
+    <div class="flex justify-content-end">
+      <button
+        pButton
+        type="button"
+        label="Cancel"
+        class="p-button-danger mr-3"
+        (click)="close()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        label="Save"
+        class="p-button-outlined"
+      ></button>
+    </div>
+  </form>
+} @else {
+  <div class="container__spinner">
+    <p-progressSpinner></p-progressSpinner>
+  </div>
+}
