@@ -17,27 +17,31 @@ const IMPORTS_MODULES = [CardModule, ButtonModule];
       <ng-template pTemplate="header">
         <div class="relative">
           <img alt="Card" [src]="images[0]" />
-          <button
-            pButton
-            icon="pi pi-pencil"
-            (click)="editProduct()"
-            class="absolute top-0 p-button-sm"
-            style="left: 70%"
-          ></button>
-          <button
-            pButton
-            icon="pi pi-trash"
-            (click)="deleteProduct()"
-            class="absolute top-0 right-0 p-button-sm p-button-danger"
-          ></button>
+          <div class="absolute top-0 right-0">
+            <button
+              pButton
+              icon="pi pi-pencil"
+              (click)="editProduct()"
+              class="p-button-sm mr-2"
+            ></button>
+            <button
+              pButton
+              icon="pi pi-trash"
+              (click)="deleteProduct()"
+              class="p-button-sm p-button-danger"
+            ></button>
+          </div>
         </div>
       </ng-template>
       <p class="m-0">
         {{ product?.description }}
       </p>
-      <div class="flex justify-content-end">
-        <p>{{ product?.category?.name }}</p>
-      </div>
+      <ng-template pTemplate="footer">
+        <div class="flex justify-content-between">
+          <p>$ {{ product?.price }}</p>
+          <p>{{ product?.category?.name }}</p>
+        </div>
+      </ng-template>
     </p-card>
   `,
 })

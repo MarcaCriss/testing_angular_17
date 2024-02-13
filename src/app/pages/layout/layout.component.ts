@@ -16,10 +16,15 @@ const IMPORTS_MODULES = [
   imports: [...IMPORTS_MODULES],
   template: `
     <app-header></app-header>
-    <main style="padding: 1rem;">
+    <main class="p-card p-3 mt-5">
       <router-outlet></router-outlet>
     </main>
   `,
-  styles: ''
+  styles: `
+    main {
+      width: 1600px;
+      margin: 0 auto;
+    }
+  `
 })
 export class LayoutComponent {}

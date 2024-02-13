@@ -22,3 +22,13 @@ export interface CategoryInterface {
 export interface ProductForm extends ProductInterface {
   categoryId: number;
 }
+
+export interface ProductFilter {
+  title?: string;
+  price?: number;
+  price_min?: number;
+  price_max?: number;
+  categoryId?: number;
+  offset?: number;
+  limit?: number;
+}

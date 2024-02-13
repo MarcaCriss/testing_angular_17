@@ -5,6 +5,11 @@
 @import "primeflex/themes/primeone-light.css";
 @import "primeflex/themes/primeone-dark.css";
 
+body {
+  padding: 0;
+  margin: 0;
+}
+
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.6);
 }
