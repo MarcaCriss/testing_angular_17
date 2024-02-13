@@ -20,6 +20,6 @@ const IMPORTS_MODULES = [
       <router-outlet></router-outlet>
     </main>
   `,
-  styleUrl: './layout.component.scss'
+  styles: ''
 })
 export class LayoutComponent {}

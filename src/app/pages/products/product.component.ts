@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
-import { ProductInterface } from '../../../shared/interfaces/product.interface';
+import { ProductInterface } from '../../shared/interfaces/product.interface';
 import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
-import { ProductFormComponent } from '../product-form/product-form.component';
+import { ProductFormComponent } from './product-form.component';
 import { ButtonModule } from 'primeng/button';
 
 const IMPORTS_MODULES = [CardModule, ButtonModule];
@@ -11,8 +11,35 @@ const IMPORTS_MODULES = [CardModule, ButtonModule];
   selector: 'app-product',
   standalone: true,
   imports: [...IMPORTS_MODULES],
-  templateUrl: './product.component.html',
-  styleUrl: './product.component.scss'
+  styles: '',
+  template: `
+    <p-card [header]="product?.title">
+      <ng-template pTemplate="header">
+        <div class="relative">
+          <img alt="Card" [src]="images[0]" />
+          <button
+            pButton
+            icon="pi pi-pencil"
+            (click)="editProduct()"
+            class="absolute top-0 p-button-sm"
+            style="left: 70%"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            (click)="deleteProduct()"
+            class="absolute top-0 right-0 p-button-sm p-button-danger"
+          ></button>
+        </div>
+      </ng-template>
+      <p class="m-0">
+        {{ product?.description }}
+      </p>
+      <div class="flex justify-content-end">
+        <p>{{ product?.category?.name }}</p>
+      </div>
+    </p-card>
+  `,
 })
 export class ProductComponent {
   @Input({ required: true }) product?: ProductInterface;

@@ -9,8 +9,12 @@ const IMPORTS_MODULES = [TabViewModule, MenubarModule];
   selector: 'app-header',
   standalone: true,
   imports: [...IMPORTS_MODULES],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+  styles: '',
+  template: `
+    <div class="card">
+      <p-menubar [model]="items"></p-menubar>
+    </div>
+  `,
 })
 export class HeaderComponent implements OnInit {
   items: MenuItem[] | undefined;
