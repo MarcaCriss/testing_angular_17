@@ -22,8 +22,9 @@ const IMPORTS_MODULES = [
   template: `
     <p-toolbar>
       <div class="p-toolbar-group-start">
-        <a pButton [icon]="primeIcons.HOME" class="mr-2" routerLink="/home"></a>
-        <a pButton [icon]="primeIcons.LIST" class="mr-2" routerLink="/products"></a>
+        <a pButton [icon]="primeIcons.HOME" class="mr-2 no-underline" routerLink="/home"></a>
+        <a pButton [icon]="primeIcons.LIST" class="mr-2 no-underline" routerLink="/products"></a>
+        <a pButton [icon]="primeIcons.TAG" class="mr-2 no-underline" routerLink="/categories"></a>
       </div>
       <div class="p-toolbar-group-end">
         <button pButton icon="pi pi-sign-out" label="Logout"></button>

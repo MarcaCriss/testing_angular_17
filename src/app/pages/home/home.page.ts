@@ -7,4 +7,4 @@ import { Component } from '@angular/core';
   styles: '',
   template: `<p>home works!</p>`,
 })
-export class HomeComponent {}
+export class HomePage {}

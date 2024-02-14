@@ -7,11 +7,15 @@ export const routes: Routes = [
     children: [
       {
         path: 'products',
-        loadComponent: () => import('./pages/products/products.component').then(m => m.ProductsComponent)
+        loadComponent: () => import('./pages/products/products.page').then(m => m.ProductsPage)
+      },
+      {
+        path: 'categories',
+        loadComponent: () => import('./pages/categories/categories.page').then(m => m.CategoriesPage)
       },
       {
         path: 'home',
-        loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
+        loadComponent: () => import('./pages/home/home.page').then(m => m.HomePage)
       },
       {
         path: '**',

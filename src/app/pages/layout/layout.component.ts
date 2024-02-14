@@ -1,11 +1,11 @@
 import { Component, inject } from '@angular/core';
 
-import { ProductsComponent } from '../products/products.component';
+import { ProductsPage } from '../products/products.page';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from '../../core/header/header.component';
 
 const IMPORTS_MODULES = [
-  ProductsComponent,
+  ProductsPage,
   HeaderComponent,
   RouterOutlet
 ];

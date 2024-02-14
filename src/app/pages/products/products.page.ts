@@ -96,7 +96,7 @@ const IMPORTS_MODULES = [
     }
   `,
 })
-export class ProductsComponent implements OnInit {
+export class ProductsPage implements OnInit {
   private productsService = inject(ProductsService);
   private dialogService = inject(DialogService);
   private categoriesService = inject(CategoriesService);
