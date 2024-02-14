@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
-import { CategoryInterface } from '../shared/interfaces/product.interface';
+import { CategoryInterface, ProductInterface } from '../shared/interfaces/product.interface';
 
 @Injectable()
 export class CategoriesService {
@@ -32,4 +32,11 @@ export class CategoriesService {
   deleteCategory(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/categories/${id}`);
   }
+
+  showProducts(id: number): Observable<ProductInterface[]> {
+    return this.http.get<ProductInterface[]>(
+      `${this.baseUrl}/categories/${id}/products`,
+    );
+  }
+
 }

@@ -8,6 +8,7 @@ import { ButtonModule } from 'primeng/button';
 import { DialogService } from 'primeng/dynamicdialog';
 import { CategoryFormComponent } from './category-form.component';
 import { PrimeIcons } from 'primeng/api';
+import { CategoryProductsComponent } from './category-products.component';
 
 const IMPORTS_MODULES = [
   TableModule,
@@ -52,7 +53,7 @@ const IMPORTS_MODULES = [
           @for (column of columns; track $index) {
             <th [pSortableColumn]="column.field">
               {{ column.header }}
-              @if (column.field !== 'actions') {
+              @if (column.field !== 'actions' && column.field !== 'image') {
                 <p-sortIcon [field]="column.field"></p-sortIcon>
               }
             </th>
@@ -73,6 +74,13 @@ const IMPORTS_MODULES = [
               [icon]="primeIcons.PENCIL"
               (click)="editCategory(category)"
               class="mr-2 p-button-outlined p-button-success"
+            ></button>
+            <button
+              pButton
+              label="Products"
+              [icon]="primeIcons.EYE"
+              (click)="showProducts(category)"
+              class="mr-2 p-button-outlined p-button-info"
             ></button>
             <button
               pButton
@@ -145,6 +153,16 @@ export class CategoriesPage implements OnInit {
     this.isLoading = true;
     this.categoriesService.deleteCategory(id).subscribe(() => {
       this.getCategories();
+    });
+  }
+
+  showProducts(category: CategoryInterface): void {
+    this.dialogService.open(CategoryProductsComponent, {
+      data: {
+        category,
+      },
+      header: `Products of "${category.name}"`,
+      width: '60%',
     });
   }
 }
