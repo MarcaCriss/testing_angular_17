@@ -45,6 +45,12 @@ const IMPORTS_MODULES = [
           class="mr-2 no-underline"
           routerLink="/categories"
         ></a>
+        <a
+          pButton
+          [icon]="primeIcons.USERS"
+          class="mr-2 no-underline"
+          routerLink="/users"
+        ></a>
       </div>
       <div class="p-toolbar-group-end">
         <p-inputSwitch
