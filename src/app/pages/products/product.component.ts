@@ -4,8 +4,9 @@ import { CardModule } from 'primeng/card';
 import { DialogService } from 'primeng/dynamicdialog';
 import { ProductFormComponent } from './product-form.component';
 import { ButtonModule } from 'primeng/button';
+import { GalleriaModule } from 'primeng/galleria';
 
-const IMPORTS_MODULES = [CardModule, ButtonModule];
+const IMPORTS_MODULES = [CardModule, ButtonModule, GalleriaModule];
 
 @Component({
   selector: 'app-product',
@@ -26,6 +27,12 @@ const IMPORTS_MODULES = [CardModule, ButtonModule];
             ></button>
             <button
               pButton
+              icon="pi pi-eye"
+              (click)="showGallery = true"
+              class="p-button-sm mr-2 p-button-help"
+            ></button>
+            <button
+              pButton
               icon="pi pi-trash"
               (click)="deleteProduct()"
               class="p-button-sm p-button-danger"
@@ -43,12 +50,28 @@ const IMPORTS_MODULES = [CardModule, ButtonModule];
         </div>
       </ng-template>
     </p-card>
+    <p-galleria
+      [value]="images"
+      [visible]="showGallery"
+      [circular]="true"
+      [showThumbnails]="false"
+      [showItemNavigators]="true"
+      [fullScreen]="true"
+      [numVisible]="5"
+      [containerStyle]="{ 'max-width': '640px' }"
+      (visibleChange)="showGallery = $event"
+    >
+      <ng-template pTemplate="item" let-item>
+        <img [src]="item" style="width: 100%;" />
+      </ng-template>
+    </p-galleria>
   `,
 })
 export class ProductComponent {
   @Input({ required: true }) product?: ProductInterface;
   @Output() deleteProductEmit = new EventEmitter<number>();
   private dialogService = inject(DialogService);
+  showGallery = false;
 
   editProduct(): void {
     this.dialogService
@@ -56,7 +79,7 @@ export class ProductComponent {
         data: {
           product: {
             ...this.product,
-            images: this.images,
+            images: this.image,
           },
         },
         header: 'Product Form',
@@ -74,6 +97,10 @@ export class ProductComponent {
   }
 
   get images(): string[] {
+    return this.product?.images || [];
+  }
+
+  get image(): string[] {
     if (this.product?.images) {
       if (
         typeof this.product.images[0] === 'string' &&
