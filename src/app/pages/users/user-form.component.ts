@@ -33,7 +33,7 @@ const IMPORTS_MODULES = [
   selector: 'app-user-form',
   standalone: true,
   imports: [...IMPORTS_MODULES],
-  providers: [TitleCasePipe],
+  providers: [TitleCasePipe, UsersService],
   styles: `
     .container__spinner {
       height: 573px;

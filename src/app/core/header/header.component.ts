@@ -8,6 +8,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { FormsModule } from '@angular/forms';
 import { DOCUMENT } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
+import { MenuModule } from 'primeng/menu';
+import { DialogService } from 'primeng/dynamicdialog';
+import { UserFormComponent } from '../../pages/users/user-form.component';
 
 const IMPORTS_MODULES = [
   TabViewModule,
@@ -17,12 +21,14 @@ const IMPORTS_MODULES = [
   InputTextModule,
   InputSwitchModule,
   FormsModule,
+  MenuModule,
 ];
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [...IMPORTS_MODULES],
+  providers: [DialogService],
   styles: '',
   template: `
     <p-toolbar>
@@ -31,25 +37,25 @@ const IMPORTS_MODULES = [
           pButton
           [icon]="primeIcons.HOME"
           class="mr-2 no-underline"
-          routerLink="/home"
+          routerLink="/pages/home"
         ></a>
         <a
           pButton
           [icon]="primeIcons.LIST"
           class="mr-2 no-underline"
-          routerLink="/products"
+          routerLink="/pages/products"
         ></a>
         <a
           pButton
           [icon]="primeIcons.TAG"
           class="mr-2 no-underline"
-          routerLink="/categories"
+          routerLink="/pages/categories"
         ></a>
         <a
           pButton
           [icon]="primeIcons.USERS"
           class="mr-2 no-underline"
-          routerLink="/users"
+          routerLink="/pages/users"
         ></a>
       </div>
       <div class="p-toolbar-group-end">
@@ -58,15 +64,40 @@ const IMPORTS_MODULES = [
           (ngModelChange)="changeTheme()"
           class="mr-3"
         ></p-inputSwitch>
-        <button pButton icon="pi pi-sign-out" label="Logout"></button>
+        <button
+          pButton
+          type="button"
+          (click)="menu.toggle($event)"
+          icon="pi pi-user"
+          class="p-button-rounded p-button-plain p-button-lg mr-3"
+        ></button>
+        <p-menu #menu [model]="items" [popup]="true"></p-menu>
       </div>
     </p-toolbar>
   `,
 })
 export class HeaderComponent {
   private document: Document = inject(DOCUMENT);
+  private authService = inject(AuthService);
+  private dialogService = inject(DialogService);
   primeIcons = PrimeIcons;
   themeSelected = false;
+  items = [
+    {
+      label: 'Profile',
+      icon: 'pi pi-cog',
+      command: () => {
+        this.showConfigProfile();
+      },
+    },
+    {
+      label: 'Logout',
+      icon: 'pi pi-sign-out',
+      command: () => {
+        this.logout();
+      },
+    },
+  ];
 
   constructor() {
     let theme = window.localStorage.getItem('theme');
@@ -74,6 +105,18 @@ export class HeaderComponent {
       this.themeSelected = theme === 'dark' ? true : false;
     }
     this.changeTheme();
+  }
+
+  showConfigProfile(): void {
+    this.authService.getProfile().subscribe((data) => {
+      this.dialogService.open(UserFormComponent, {
+        header: 'Profile',
+        width: '50%',
+        data: {
+          user: data,
+        },
+      });
+    });
   }
 
   changeTheme(): void {
@@ -85,5 +128,9 @@ export class HeaderComponent {
     if (themeLink) {
       themeLink.href = `lara-${theme}-blue.css`;
     }
+  }
+
+  logout(): void {
+    this.authService.logout();
   }
 }

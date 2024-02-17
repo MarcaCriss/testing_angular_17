@@ -1,9 +1,13 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './shared/guards/auth.guard';
+import { noAuthGuard } from './shared/guards/no-auth.guard';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'pages',
     loadComponent: () => import('./pages/layout/layout.component').then(m => m.LayoutComponent),
+    canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       {
         path: 'products',
@@ -26,6 +30,27 @@ export const routes: Routes = [
         redirectTo: 'home',
         pathMatch: 'full'
       }
+    ],
+  },
+  {
+    path: 'auth',
+    loadComponent: () => import('./pages/auth/auth.page').then(m => m.AuthPage),
+    children: [
+      {
+        path: 'login',
+        loadComponent: () => import('./pages/auth/login.component').then(m => m.LoginComponent),
+        canActivate: [noAuthGuard]
+      },
+      {
+        path: '**',
+        redirectTo: 'login',
+        pathMatch: 'full'
+      }
     ]
   },
+  {
+    path: '**',
+    redirectTo: 'auth',
+    pathMatch: 'full'
+  }
 ];

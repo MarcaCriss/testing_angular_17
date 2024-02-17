@@ -17,7 +17,7 @@ const IMPORTS_MODULES = [CardModule, ButtonModule, GalleriaModule];
     <p-card [header]="product?.title">
       <ng-template pTemplate="header">
         <div class="relative">
-          <img alt="Card" [src]="images[0]" />
+          <img alt="Card" [src]="transformedImages[0]" />
           <div class="absolute top-0 right-0">
             <button
               pButton
@@ -51,7 +51,7 @@ const IMPORTS_MODULES = [CardModule, ButtonModule, GalleriaModule];
       </ng-template>
     </p-card>
     <p-galleria
-      [value]="images"
+      [value]="transformedImages"
       [visible]="showGallery"
       [circular]="true"
       [showThumbnails]="false"
@@ -79,7 +79,7 @@ export class ProductComponent {
         data: {
           product: {
             ...this.product,
-            images: this.image,
+            images: this.transformedImages,
           },
         },
         header: 'Product Form',
@@ -100,7 +100,8 @@ export class ProductComponent {
     return this.product?.images || [];
   }
 
-  get image(): string[] {
+  get transformedImages(): string[] {
+    // This is a workaround to fix the issue with the images
     if (this.product?.images) {
       if (
         typeof this.product.images[0] === 'string' &&

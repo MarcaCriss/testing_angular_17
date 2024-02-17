@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
+import { AuthService } from './services/auth.service';
 
 const IMPORTS_MODULES = [
   CommonModule,
@@ -16,4 +17,10 @@ const IMPORTS_MODULES = [
   `,
   styleUrl: './app.component.scss',
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  private authService = inject(AuthService);
+
+  ngOnInit() {
+    this.authService.init();
+  }
+}
