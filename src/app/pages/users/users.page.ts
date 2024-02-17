@@ -8,12 +8,15 @@ import { UserInterface } from '../../shared/interfaces/user.interface';
 import { DialogService } from 'primeng/dynamicdialog';
 import { UserFormComponent } from './user-form.component';
 import { TitleCasePipe } from '@angular/common';
+import { OnlyAdminDirective } from '../../shared/directives/only-admin.directive';
+import { AuthService } from '../../services/auth.service';
 
 const IMPORTS_MODULES = [
   ButtonModule,
   TableModule,
   DividerModule,
   TitleCasePipe,
+  OnlyAdminDirective,
 ];
 
 @Component({
@@ -26,6 +29,7 @@ const IMPORTS_MODULES = [
     <div class="flex justify-content-between align-items-center">
       <h1>Users</h1>
       <button
+        *appOnlyAdmin
         pButton
         (click)="addUser()"
         [icon]="primeIcons.PLUS"
@@ -60,22 +64,24 @@ const IMPORTS_MODULES = [
           <td>{{ user.name }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.role | titlecase }}</td>
-          <td>
-            <button
-              pButton
-              label="Edit"
-              [icon]="primeIcons.PENCIL"
-              (click)="editUser(user)"
-              class="mr-2 p-button-outlined p-button-success"
-            ></button>
-            <button
-              pButton
-              label="Delete"
-              [icon]="primeIcons.TIMES"
-              (click)="deleteUser(user.id)"
-              class="p-button-outlined p-button-danger"
-            ></button>
-          </td>
+          @if (isAdmin) {
+            <td>
+              <button
+                pButton
+                label="Edit"
+                [icon]="primeIcons.PENCIL"
+                (click)="editUser(user)"
+                class="mr-2 p-button-outlined p-button-success"
+              ></button>
+              <button
+                pButton
+                label="Delete"
+                [icon]="primeIcons.TIMES"
+                (click)="deleteUser(user.id)"
+                class="p-button-outlined p-button-danger"
+              ></button>
+            </td>
+          }
         </tr>
       </ng-template>
     </p-table>
@@ -84,6 +90,7 @@ const IMPORTS_MODULES = [
 export class UsersPage implements OnInit {
   private usersService = inject(UsersService);
   private dialogService = inject(DialogService);
+  private authService = inject(AuthService);
   primeIcons = PrimeIcons;
   users: UserInterface[] = [];
   isLoading = false;
@@ -97,6 +104,9 @@ export class UsersPage implements OnInit {
 
   ngOnInit(): void {
     this.getUsers();
+    if (!this.isAdmin) {
+      this.columns.pop();
+    }
   }
 
   getUsers(): void {
@@ -140,5 +150,9 @@ export class UsersPage implements OnInit {
     this.usersService.deleteUser(id).subscribe((res) => {
       this.getUsers();
     });
+  }
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin;
   }
 }

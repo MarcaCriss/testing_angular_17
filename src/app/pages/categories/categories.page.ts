@@ -9,12 +9,14 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { CategoryFormComponent } from './category-form.component';
 import { PrimeIcons } from 'primeng/api';
 import { CategoryProductsComponent } from './category-products.component';
+import { OnlyAdminDirective } from '../../shared/directives/only-admin.directive';
 
 const IMPORTS_MODULES = [
   TableModule,
   DividerModule,
   InputTextModule,
   ButtonModule,
+  OnlyAdminDirective,
 ];
 
 @Component({
@@ -36,6 +38,7 @@ const IMPORTS_MODULES = [
         (click)="addCategory()"
         [icon]="primeIcons.PLUS"
         label="Add Category"
+        *appOnlyAdmin
       ></button>
     </div>
     <p-divider></p-divider>
@@ -69,6 +72,7 @@ const IMPORTS_MODULES = [
           </td>
           <td>
             <button
+              *appOnlyAdmin
               pButton
               label="Edit"
               [icon]="primeIcons.PENCIL"
@@ -83,6 +87,7 @@ const IMPORTS_MODULES = [
               class="mr-2 p-button-outlined p-button-info"
             ></button>
             <button
+              *appOnlyAdmin
               pButton
               label="Delete"
               [icon]="primeIcons.TIMES"

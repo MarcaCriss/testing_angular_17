@@ -20,6 +20,7 @@ import {
 } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CategoriesService } from '../../services/categories.service';
+import { OnlyAdminDirective } from '../../shared/directives/only-admin.directive';
 
 const IMPORTS_MODULES = [
   ProductComponent,
@@ -34,6 +35,7 @@ const IMPORTS_MODULES = [
   ReactiveFormsModule,
   ListboxModule,
   SliderModule,
+  OnlyAdminDirective,
 ];
 
 @Component({
@@ -51,7 +53,9 @@ const IMPORTS_MODULES = [
             <i class="pi pi-search"></i>
             <input type="text" pInputText formControlName="title" />
           </span>
-          <button pButton (click)="createProduct()">Add Product</button>
+          <button *appOnlyAdmin pButton (click)="createProduct()">
+            Add Product
+          </button>
         </div>
         <p-divider></p-divider>
         <div class="grid">
@@ -92,7 +96,12 @@ const IMPORTS_MODULES = [
         </div>
       </ng-container>
     } @else {
-      <p-progressSpinner></p-progressSpinner>
+      <div
+        class="flex justify-content-center align-items-center"
+        style="height: 46rem"
+      >
+        <p-progressSpinner></p-progressSpinner>
+      </div>
     }
   `,
 })

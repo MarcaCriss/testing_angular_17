@@ -58,7 +58,7 @@ const IMPORTS_MODULES = [TableModule, CurrencyPipe];
             <p class="m-0 description">{{ product.description }}</p>
           </td>
           <td>
-            @for (image of product.images; track $index) {
+            @for (image of getImages(product.images); track $index) {
               <img [src]="image" style="width: 50px" class="mr-2" />
             }
           </td>
@@ -107,5 +107,17 @@ export class CategoryProductsComponent implements OnInit {
         this.products = products;
         this.isLoading = false;
       });
+  }
+
+  getImages(images: string[]): string[] {
+    // This is a workaround to fix the issue with the images
+    if (images.length) {
+      if (typeof images[0] === 'string' && images[0].startsWith('["')) {
+        return images.map((url) => url.replace(/\\|\[|\]|"/g, ''));
+      } else {
+        return images;
+      }
+    }
+    return [];
   }
 }

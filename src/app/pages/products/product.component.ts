@@ -5,8 +5,15 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { ProductFormComponent } from './product-form.component';
 import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
+import { OnlyAdminDirective } from '../../shared/directives/only-admin.directive';
+import { AuthService } from '../../services/auth.service';
 
-const IMPORTS_MODULES = [CardModule, ButtonModule, GalleriaModule];
+const IMPORTS_MODULES = [
+  CardModule,
+  ButtonModule,
+  GalleriaModule,
+  OnlyAdminDirective,
+];
 
 @Component({
   selector: 'app-product',
@@ -20,6 +27,7 @@ const IMPORTS_MODULES = [CardModule, ButtonModule, GalleriaModule];
           <img alt="Card" [src]="transformedImages[0]" />
           <div class="absolute top-0 right-0">
             <button
+              *appOnlyAdmin
               pButton
               icon="pi pi-pencil"
               (click)="editProduct()"
@@ -29,9 +37,11 @@ const IMPORTS_MODULES = [CardModule, ButtonModule, GalleriaModule];
               pButton
               icon="pi pi-eye"
               (click)="showGallery = true"
-              class="p-button-sm mr-2 p-button-help"
+              class="p-button-sm p-button-help"
+              [ngClass]="{ 'mr-2': isAdmin }"
             ></button>
             <button
+              *appOnlyAdmin
               pButton
               icon="pi pi-trash"
               (click)="deleteProduct()"
@@ -71,6 +81,7 @@ export class ProductComponent {
   @Input({ required: true }) product?: ProductInterface;
   @Output() deleteProductEmit = new EventEmitter<number>();
   private dialogService = inject(DialogService);
+  private authService = inject(AuthService);
   showGallery = false;
 
   editProduct(): void {
@@ -115,5 +126,9 @@ export class ProductComponent {
     return [
       'https://ih1.redbubble.net/image.1893341687.8294/fposter,small,wall_texture,product,750x1000.jpg',
     ];
+  }
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin;
   }
 }

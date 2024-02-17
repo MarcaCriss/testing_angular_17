@@ -8,6 +8,7 @@ import {
 import { Router } from '@angular/router';
 import { UserInterface } from '../shared/interfaces/user.interface';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { UserRole } from '../shared/enums/user.enum';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +20,7 @@ export class AuthService {
   private token = '';
   private refreshToken = '';
   baseUrl = 'https://api.escuelajs.co/api/v1';
+  user!: UserInterface | null;
 
   async init(): Promise<void> {
     this.refreshToken = localStorage.getItem('refresh_token') || '';
@@ -29,6 +31,12 @@ export class AuthService {
           return this.token;
         };
       });
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (user) {
+        this.user = user;
+      } else {
+        this.getUser();
+      }
     }
   }
 
@@ -41,6 +49,7 @@ export class AuthService {
           this.refreshToken = login.refresh_token;
           localStorage.setItem('access_token', login.access_token);
           localStorage.setItem('refresh_token', login.refresh_token);
+          this.getUser();
           this.router.navigate(['/pages/home']);
         }),
       );
@@ -81,9 +90,17 @@ export class AuthService {
     }
   }
 
+  getUser() {
+    this.getProfile().subscribe((user) => {
+      this.user = user;
+      localStorage.setItem('user', JSON.stringify(user));
+    });
+  }
+
   logout(): void {
     this.token = '';
     this.refreshToken = '';
+    this.user = null;
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     this.router.navigate(['/auth/login']);
@@ -100,5 +117,9 @@ export class AuthService {
       response = false;
     }
     return response;
+  }
+
+  get isAdmin(): boolean {
+    return this.user?.role === UserRole.ADMIN;
   }
 }

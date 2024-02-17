@@ -17,6 +17,7 @@ import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { UserInterface } from '../../shared/interfaces/user.interface';
 import { UsersService } from '../../services/users.service';
 import { debounceTime } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 const IMPORTS_MODULES = [
   ReactiveFormsModule,
@@ -123,6 +124,7 @@ export class UserFormComponent implements OnInit {
   private dialogConfig = inject(DynamicDialogConfig);
   private dialogRef = inject(DynamicDialogRef);
   private usersService = inject(UsersService);
+  private authService = inject(AuthService);
   isLoading = false;
   form = this.buildForm();
   roleOptions = Object.entries(UserRole).map(([key, value]) => ({
@@ -143,6 +145,9 @@ export class UserFormComponent implements OnInit {
         .subscribe((email) => {
           this.checkEmail(email);
         });
+    }
+    if (this.user && !this.isAdmin) {
+      this.form.get('role')?.disable();
     }
   }
 
@@ -200,5 +205,9 @@ export class UserFormComponent implements OnInit {
       this.form.get('avatar')?.value ||
       'https://i0.wp.com/digitalhealthskills.com/wp-content/uploads/2022/11/fd35c-no-user-image-icon-27.png?fit=500%2C500&ssl=1'
     );
+  }
+
+  get isAdmin(): boolean {
+    return this.authService.isAdmin;
   }
 }
