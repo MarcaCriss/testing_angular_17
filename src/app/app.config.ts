@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { AuthService } from './services/auth.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { MessageService } from 'primeng/api';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -25,5 +26,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideAnimations(),
     { provide: AuthService },
+    { provide: MessageService },
   ],
 };
