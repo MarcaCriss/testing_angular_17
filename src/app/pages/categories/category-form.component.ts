@@ -12,6 +12,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CategoryInterface } from '../../shared/interfaces/product.interface';
 import { CategoriesService } from '../../services/categories.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { AlertService } from '../../services/alert.service';
 
 const IMPORTS_MODULES = [
   ReactiveFormsModule,
@@ -79,6 +80,7 @@ export class CategoryFormComponent implements OnInit {
   private dialogRef = inject(DynamicDialogRef);
   private dialogConfig = inject(DynamicDialogConfig);
   private categoriesService = inject(CategoriesService);
+  private alertService = inject(AlertService);
   form = this.formBuild();
   isLoading = false;
   category!: CategoryInterface;
@@ -112,6 +114,7 @@ export class CategoryFormComponent implements OnInit {
       this.categoriesService
         .updateCategory(this.category.id, this.form.value)
         .subscribe((category) => {
+          this.alertService.success();
           this.isLoading = false;
           this.close(category);
         });
@@ -119,6 +122,7 @@ export class CategoryFormComponent implements OnInit {
       this.categoriesService
         .saveCategory(this.form.value)
         .subscribe((category) => {
+          this.alertService.success();
           this.isLoading = false;
           this.close(category);
         });

@@ -25,6 +25,7 @@ import {
 } from 'primeng/fileupload';
 import { MessageService } from 'primeng/api';
 import { FilesService } from '../../services/files.service';
+import { AlertService } from '../../services/alert.service';
 
 const IMPORTS_MODULES = [
   ReactiveFormsModule,
@@ -157,6 +158,7 @@ export class UserFormComponent implements OnInit {
   private authService = inject(AuthService);
   private messageService = inject(MessageService);
   private filesService = inject(FilesService);
+  private alertService = inject(AlertService);
   isLoading = false;
   form = this.buildForm();
   roleOptions = Object.entries(UserRole).map(([key, value]) => ({
@@ -291,6 +293,7 @@ export class UserFormComponent implements OnInit {
     if (this.isUserProfile) {
       this.authService.user = user;
     }
+    this.alertService.success();
   }
 
   close(user?: UserInterface) {

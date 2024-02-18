@@ -21,6 +21,8 @@ import {
 import { debounceTime } from 'rxjs';
 import { CategoriesService } from '../../services/categories.service';
 import { OnlyAdminDirective } from '../../shared/directives/only-admin.directive';
+import { AlertService } from '../../services/alert.service';
+import { ProductInterface } from '../../shared/interfaces/product.interface';
 
 const IMPORTS_MODULES = [
   ProductComponent,
@@ -86,7 +88,7 @@ const IMPORTS_MODULES = [
                 <app-product
                   class="col-3"
                   [product]="product"
-                  (deleteProductEmit)="deleteProduct($event)"
+                  (deleteProductEmit)="deleteProduct(product)"
                 ></app-product>
               } @empty {
                 <p>There are no products to display.</p>
@@ -110,6 +112,7 @@ export class ProductsPage implements OnInit {
   private dialogService = inject(DialogService);
   private categoriesService = inject(CategoriesService);
   private fb = inject(FormBuilder);
+  private alertService = inject(AlertService);
   products$ = this.productsService.getProducts();
   isLoading = true;
   form = this.formBuild();
@@ -154,10 +157,16 @@ export class ProductsPage implements OnInit {
     });
   }
 
-  deleteProduct(id: number) {
-    this.productsService.deleteProduct(id).subscribe((res) => {
-      this.isLoading = true;
-      this.getProducts();
+  deleteProduct(product: ProductInterface) {
+    this.alertService.confirmation({
+      accept: () => {
+        this.productsService.deleteProduct(product.id).subscribe((res) => {
+          this.isLoading = true;
+          this.getProducts();
+        });
+      },
+      header: 'Delete Product',
+      message: `Do you want to delete "${product.title}"?`,
     });
   }
 

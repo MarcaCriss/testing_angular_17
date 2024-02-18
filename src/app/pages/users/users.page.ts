@@ -10,6 +10,7 @@ import { UserFormComponent } from './user-form.component';
 import { TitleCasePipe } from '@angular/common';
 import { OnlyAdminDirective } from '../../shared/directives/only-admin.directive';
 import { AuthService } from '../../services/auth.service';
+import { AlertService } from '../../services/alert.service';
 
 const IMPORTS_MODULES = [
   ButtonModule,
@@ -77,7 +78,7 @@ const IMPORTS_MODULES = [
                 pButton
                 label="Delete"
                 [icon]="primeIcons.TIMES"
-                (click)="deleteUser(user.id)"
+                (click)="deleteUser(user)"
                 class="p-button-outlined p-button-danger"
               ></button>
             </td>
@@ -91,6 +92,7 @@ export class UsersPage implements OnInit {
   private usersService = inject(UsersService);
   private dialogService = inject(DialogService);
   private authService = inject(AuthService);
+  private alertService = inject(AlertService);
   primeIcons = PrimeIcons;
   users: UserInterface[] = [];
   isLoading = false;
@@ -146,9 +148,15 @@ export class UsersPage implements OnInit {
       });
   }
 
-  deleteUser(id: number): void {
-    this.usersService.deleteUser(id).subscribe((res) => {
-      this.getUsers();
+  deleteUser(user: UserInterface): void {
+    this.alertService.confirmation({
+      header: 'Delete User',
+      message: `Do you want to delete "${user.name}"?`,
+      accept: () => {
+        this.usersService.deleteUser(user.id).subscribe((res) => {
+          this.getUsers();
+        });
+      },
     });
   }
 

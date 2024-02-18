@@ -1,14 +1,14 @@
 import { FormControl } from "@angular/forms";
 
 export interface ProductInterface {
-  id?: number;
-  title?: string;
-  price?: number;
-  description?: string;
-  images?: string[];
-  creationAt?: string;
-  updatedAt?: string;
-  category?: CategoryInterface;
+  id: number;
+  title: string;
+  price: number;
+  description: string;
+  images: string[];
+  creationAt: string;
+  updatedAt: string;
+  category: CategoryInterface;
 }
 
 export interface CategoryInterface {

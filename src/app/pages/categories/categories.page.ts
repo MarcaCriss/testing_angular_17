@@ -10,6 +10,7 @@ import { CategoryFormComponent } from './category-form.component';
 import { PrimeIcons } from 'primeng/api';
 import { CategoryProductsComponent } from './category-products.component';
 import { OnlyAdminDirective } from '../../shared/directives/only-admin.directive';
+import { AlertService } from '../../services/alert.service';
 
 const IMPORTS_MODULES = [
   TableModule,
@@ -91,7 +92,7 @@ const IMPORTS_MODULES = [
               pButton
               label="Delete"
               [icon]="primeIcons.TIMES"
-              (click)="deleteCategory(category.id)"
+              (click)="deleteCategory(category)"
               class="p-button-outlined p-button-danger"
             ></button>
           </td>
@@ -103,6 +104,7 @@ const IMPORTS_MODULES = [
 export class CategoriesPage implements OnInit {
   private categoriesService = inject(CategoriesService);
   private dialogService = inject(DialogService);
+  private alertService = inject(AlertService);
   categories: CategoryInterface[] = [];
   columns = [
     { field: 'id', header: 'Id' },
@@ -154,10 +156,16 @@ export class CategoriesPage implements OnInit {
       });
   }
 
-  deleteCategory(id: number): void {
-    this.isLoading = true;
-    this.categoriesService.deleteCategory(id).subscribe(() => {
-      this.getCategories();
+  deleteCategory(category: CategoryInterface): void {
+    this.alertService.confirmation({
+      header: 'Delete Category',
+      message: `Do you want to delete "${category.name}"?`,
+      accept: () => {
+        this.isLoading = true;
+        this.categoriesService.deleteCategory(category.id).subscribe(() => {
+          this.getCategories();
+        });
+      },
     });
   }
 

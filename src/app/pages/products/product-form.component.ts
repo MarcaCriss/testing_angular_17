@@ -19,6 +19,7 @@ import { CategoriesService } from '../../services/categories.service';
 import { ProductsService } from '../../services/products.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { AlertService } from '../../services/alert.service';
 
 const IMPORTS_MODULES = [
   ReactiveFormsModule,
@@ -154,6 +155,7 @@ export class ProductFormComponent implements OnInit {
   private dialogConfig = inject(DynamicDialogConfig);
   private categoriesService = inject(CategoriesService);
   private productsService = inject(ProductsService);
+  private alertService = inject(AlertService);
 
   categoryOptions: { label: string; value: number }[] = [];
   form: FormGroup = this.buildForm();
@@ -202,6 +204,7 @@ export class ProductFormComponent implements OnInit {
         .updateProduct(this.product.id, this.form.value)
         .subscribe((product) => {
           if (product) {
+            this.alertService.success();
             this.close(product);
           }
           this.isLoading = false;
@@ -209,6 +212,7 @@ export class ProductFormComponent implements OnInit {
     } else {
       this.productsService.saveProduct(this.form.value).subscribe((product) => {
         if (product) {
+          this.alertService.success();
           this.close(product);
         }
         this.isLoading = false;
