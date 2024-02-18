@@ -59,17 +59,24 @@ const IMPORTS_MODULES = [
         ></a>
       </div>
       <div class="p-toolbar-group-end">
+        <label
+          for="toggle__theme"
+          style="margin-bottom: .3rem; margin-right: .5rem; cursor: pointer;"
+        >
+          Dark mode
+        </label>
         <p-inputSwitch
           [(ngModel)]="themeSelected"
           (ngModelChange)="changeTheme()"
           class="mr-3"
+          inputId="toggle__theme"
         ></p-inputSwitch>
         <button
           pButton
           type="button"
           (click)="menu.toggle($event)"
           class="p-button-rounded p-button-plain p-button-lg mr-3 p-button-icon-only"
-          style="background-image: url({{avatarUrl}}); background-size: cover"
+          style="background-image: url({{ avatarUrl }}); background-size: cover"
         ></button>
         <p-menu #menu [model]="items" [popup]="true"></p-menu>
       </div>
@@ -114,7 +121,7 @@ export class HeaderComponent {
         width: '50%',
         data: {
           user: data,
-          isUserProfile: true
+          isUserProfile: true,
         },
       });
     });
