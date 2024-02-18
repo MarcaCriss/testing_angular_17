@@ -68,8 +68,8 @@ const IMPORTS_MODULES = [
           pButton
           type="button"
           (click)="menu.toggle($event)"
-          icon="pi pi-user"
-          class="p-button-rounded p-button-plain p-button-lg mr-3"
+          class="p-button-rounded p-button-plain p-button-lg mr-3 p-button-icon-only"
+          style="background-image: url({{avatarUrl}}); background-size: cover"
         ></button>
         <p-menu #menu [model]="items" [popup]="true"></p-menu>
       </div>
@@ -114,6 +114,7 @@ export class HeaderComponent {
         width: '50%',
         data: {
           user: data,
+          isUserProfile: true
         },
       });
     });
@@ -132,5 +133,9 @@ export class HeaderComponent {
 
   logout(): void {
     this.authService.logout();
+  }
+
+  get avatarUrl(): string {
+    return this.authService.user?.avatar || '';
   }
 }

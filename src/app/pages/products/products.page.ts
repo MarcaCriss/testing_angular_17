@@ -45,42 +45,42 @@ const IMPORTS_MODULES = [
   styles: '',
   providers: [ProductsService, DialogService, CategoriesService],
   template: `
-    @if (products$ | async; as products) {
-      <ng-container [formGroup]="form">
-        <div class="flex justify-content-between align-items-center">
-          <h1>Products</h1>
-          <span class="p-input-icon-left">
-            <i class="pi pi-search"></i>
-            <input type="text" pInputText formControlName="title" />
-          </span>
-          <button *appOnlyAdmin pButton (click)="createProduct()">
-            Add Product
-          </button>
-        </div>
-        <p-divider></p-divider>
-        <div class="grid">
-          <div class="col-2">
-            <h2>Categories</h2>
-            <p-listbox
-              [options]="categories"
-              listStyleClass="custom-scroll"
-              formControlName="categoryId"
-              [listStyle]="{ 'max-height': '440px' }"
-            ></p-listbox>
-            <h2>Prices</h2>
-            <p-slider
-              [range]="true"
-              [min]="10"
-              [max]="200"
-              [step]="10"
-              formControlName="rangesPrices"
-            ></p-slider>
-            <div class="flex justify-content-between">
-              <p>Min: $ {{ priceMin }}</p>
-              <p>Max: $ {{ priceMax }}</p>
-            </div>
+    <ng-container [formGroup]="form">
+      <div class="flex justify-content-between align-items-center">
+        <h1>Products</h1>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input type="text" pInputText formControlName="title" />
+        </span>
+        <button *appOnlyAdmin pButton (click)="createProduct()">
+          Add Product
+        </button>
+      </div>
+      <p-divider></p-divider>
+      <div class="grid">
+        <div class="col-2">
+          <h2>Categories</h2>
+          <p-listbox
+            [options]="categories"
+            listStyleClass="custom-scroll"
+            formControlName="categoryId"
+            [listStyle]="{ 'max-height': '440px' }"
+          ></p-listbox>
+          <h2>Prices</h2>
+          <p-slider
+            [range]="true"
+            [min]="10"
+            [max]="200"
+            [step]="10"
+            formControlName="rangesPrices"
+          ></p-slider>
+          <div class="flex justify-content-between">
+            <p>Min: $ {{ priceMin }}</p>
+            <p>Max: $ {{ priceMax }}</p>
           </div>
-          <div class="col-10">
+        </div>
+        <div class="col-10">
+          @if (products$ | async; as products) {
             <div class="grid">
               @for (product of products; track product.id) {
                 <app-product
@@ -92,17 +92,17 @@ const IMPORTS_MODULES = [
                 <p>There are no products to display.</p>
               }
             </div>
-          </div>
+          } @else {
+            <div
+              class="flex justify-content-center align-items-center"
+              style="height: 46rem"
+            >
+              <p-progressSpinner></p-progressSpinner>
+            </div>
+          }
         </div>
-      </ng-container>
-    } @else {
-      <div
-        class="flex justify-content-center align-items-center"
-        style="height: 46rem"
-      >
-        <p-progressSpinner></p-progressSpinner>
       </div>
-    }
+    </ng-container>
   `,
 })
 export class ProductsPage implements OnInit {

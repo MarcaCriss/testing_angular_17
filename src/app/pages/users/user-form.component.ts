@@ -167,9 +167,11 @@ export class UserFormComponent implements OnInit {
   isEmailRegistered = false;
   file: File | null = null;
   urlAvatarTemp: string | null = null;
+  isUserProfile = false;
 
   ngOnInit() {
     this.user = this.dialogConfig.data?.user;
+    this.isUserProfile = this.dialogConfig.data?.isUserProfile;
     if (this.user) {
       this.form.patchValue(this.user);
       this.urlAvatarTemp = this.user.avatar;
@@ -272,14 +274,22 @@ export class UserFormComponent implements OnInit {
       this.usersService
         .updateUser(this.user.id, this.form.value)
         .subscribe((user) => {
+          this.saveUserProfile(user);
           this.isLoading = false;
           this.close(user);
         });
     } else {
       this.usersService.saveUser(this.form.value).subscribe((user) => {
+        this.saveUserProfile(user);
         this.isLoading = false;
         this.close(user);
       });
+    }
+  }
+
+  saveUserProfile(user: UserInterface) {
+    if (this.isUserProfile) {
+      this.authService.user = user;
     }
   }
 
