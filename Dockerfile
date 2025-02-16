@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --configuration=production
+RUN npm run ng -- build --base-href / --prod
 
 FROM nginx:alpine
 
