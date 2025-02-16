@@ -29,7 +29,7 @@ const IMPORTS_MODULES = [
     <div class="flex justify-content-center align-items-center h-screen">
       <p-card [style]="{ width: '27rem' }">
         @if (!isLoading) {
-          <h1 class="m-0">Login</h1>
+          <h1 class="m-0">Sign In</h1>
           <form [formGroup]="form" (ngSubmit)="submit()">
             <span class="p-float-label mt-5 p-fluid">
               <input type="text" pInputText formControlName="email" />
