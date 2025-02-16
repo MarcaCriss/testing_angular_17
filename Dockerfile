@@ -1,7 +1,7 @@
 
 FROM node:18-alpine AS build
 
-WORKDIR /usr/src/app
+WORKDIR /app
 
 COPY package*.json ./
 RUN npm install
@@ -12,7 +12,7 @@ RUN npm run build --configuration=production
 
 FROM nginx:alpine
 
-COPY --from=build /usr/src/app/dist/test_angular_17 /usr/share/nginx/html
+COPY --from=build /app/dist/test_angular_17 /usr/share/nginx/html
 COPY ./nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
